@@ -1,12 +1,14 @@
 import sys
 from models.user_profile import User
-from models.data import user_db
+from models.user_profile import user_db
+
+users = user_db()
 
 def user_menu_loop(active_user):
    
     #Nested loop for the user interface. 
     #Users stay in this loop until they choose to log out.
-    print("Welcome " + active_user + "!")
+    print("Welcome " + active_user.username + "!")
 
     while True:
         print("\n--- User Dashboard ---")
@@ -20,17 +22,22 @@ def user_menu_loop(active_user):
         
         if choice == "1":
             print("Browse and Customize Drinks: Not implemented")
+            input()
         elif choice == "2":
             print("Save and Reorder Custom Recipes: Not implemented")
+            input()
         elif choice == "3":
             print("Generate Personalized/Mood Recommendations: Not implemented")
+            input()
         elif choice == "4":
             print("Natural-Language Drink Ordering: Not implemented")
+            input()
         elif choice == "5":
             print("Logging out...")
             break  #Exits the user loop and returns to the main menu loop
         else:
             print("Invalid selection. Please try again.")
+            input()
 
 def guest_menu_loop():
 
@@ -92,11 +99,19 @@ def main():
         
         if choice == "1":
             name = input("Type a username:")
-            if(user_db[name]):
-                user_menu_loop(name)
+            if(users.users[name]):
+                user_menu_loop(users.users[name])
+            else:
+                print("\nError: user already exists")
+                input("Press ENTER to go back to the main menu")
             
         elif choice == "2":
-            print("Create User Account: Not implemented")
+            name = input("Choose a username: ")
+            if(users.create_user(name)):
+                user_menu_loop(name)
+            else:
+                print("\nError: user already exists")
+                input("Press ENTER to go back to the main menu")
 
         elif choice == "3":
             print("Guest login:")

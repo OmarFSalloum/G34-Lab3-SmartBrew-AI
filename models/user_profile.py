@@ -12,3 +12,14 @@ class User:
     def record_order(self, drink_name):
         self.order_history.append(drink_name)
 
+class user_db:
+    def __init__(self):
+        self.users = {
+            "Alice" : User("Alice"),
+            "Bob" : User("Bob")
+        }
+    def create_user(self, name):
+        if(self.users[name]):
+            return False
+        self.users[name] = User(name)
+        return True

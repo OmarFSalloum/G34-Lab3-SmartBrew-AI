@@ -1,9 +1,4 @@
-import user_profile as user
 
-user_db = {
-    "Alice" : user.User("Alice"),
-
-}
 
 # Dictionary representing the machine's inventory state
 inventory = {
