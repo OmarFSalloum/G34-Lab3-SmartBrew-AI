@@ -3,6 +3,8 @@ from models.user_profile import User
 from models.user_profile import user_db
 
 users = user_db()
+from models.data import inventory, waste_bins
+from machine_logic.inventory_functions import get_ingredient_alerts, get_waste_alerts, refill_all_ingredients, empty_waste_bins
 
 def user_menu_loop(active_user):
    
@@ -64,19 +66,35 @@ def admin_menu_loop():
     #Nested loop for the admin interface.
     #Admins stay in this loop until they exit back to the main menu
     
+    #Fetch active alerts
+    ingredient_alerts = get_ingredient_alerts(inventory)
+    waste_alerts = get_waste_alerts(waste_bins)
+
+    #Print alerts if there are any
+
+    if ingredient_alerts or waste_alerts:
+        print("\n[ACTIVE ALERTS]")
+        for alert in ingredient_alerts:
+            print(f" - {alert}")
+        for alert in waste_alerts:
+            print(f" - {alert}")
+    else:
+        print("\n[System Status: OK]")
 
     while True:
         print("\n--- Admin Dashboard ---")
-        print("1. Register Ingredient Refills")
-        print("2. Monitor Waste and Coffee-Ground Bins")
+        print("\n1. Register Ingredient Refills")
+        print("2. Empty Waste Bins")
         print("3. Exit Admin Mode")
         
         choice = input("Select an option (1-3): ")
         
         if choice == "1":
-            print("Register Ingredient Refills: Not implemented")
+            refill_all_ingredients(inventory)
+            print("\n[Success] All ingredients refilled to maximum capacity.")
         elif choice == "2":
-            print("Monitor Waste and Coffee-Ground Bins: Not implemented")
+            empty_waste_bins(waste_bins)
+            print("\n[Success] All waste bins emptied.")
         elif choice == "3":
             print("Exiting Admin Mode...")
             break  #Exits the admin loop and returns to the main menu loop
