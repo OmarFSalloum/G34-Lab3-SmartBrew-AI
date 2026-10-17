@@ -1,10 +1,13 @@
 import sys
+from models.user_profile import User
+from models.data import user_db
 
-def user_menu_loop():
+def user_menu_loop(active_user):
    
     #Nested loop for the user interface. 
     #Users stay in this loop until they choose to log out.
-    
+    print("Welcome " + active_user + "!")
+
     while True:
         print("\n--- User Dashboard ---")
         print("1. Browse and Customize Drinks")
@@ -88,9 +91,9 @@ def main():
         choice = input("Select an option (1-4): ")
         
         if choice == "1":
-            print("User Login: Not implemented (Simulating successful login...)")
-            #Enters the nested user menu loop
-            user_menu_loop()
+            name = input("Type a username:")
+            if(user_db[name]):
+                user_menu_loop(name)
             
         elif choice == "2":
             print("Create User Account: Not implemented")
