@@ -19,7 +19,7 @@ class user_db:
             "Bob" : User("Bob")
         }
     def create_user(self, name):
-        if(self.users[name]):
+        if name in self.users:
             return False
         self.users[name] = User(name)
         return True

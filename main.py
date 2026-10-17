@@ -126,7 +126,7 @@ def main():
         elif choice == "2":
             name = input("Choose a username: ")
             if(users.create_user(name)):
-                user_menu_loop(name)
+                user_menu_loop(users.users[name])
             else:
                 print("\nError: user already exists")
                 input("Press ENTER to go back to the main menu")
