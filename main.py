@@ -1,5 +1,4 @@
 import sys
-from models.user_profile import User
 from models.user_profile import user_db
 
 users = user_db()
