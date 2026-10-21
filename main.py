@@ -1,5 +1,6 @@
 import sys
 from models.user_profile import user_db
+from llm_simulator import parse_natural_language_order
 
 users = user_db()
 
@@ -162,7 +163,15 @@ def user_menu_loop(active_user):
             print("Generate Personalized/Mood Recommendations: Not implemented")
             input()
         elif choice == "4":
-            print("Natural-Language Drink Ordering: Not implemented")
+            print("\n--- LLM Order ---")
+            prompt = input("Tell me what you're craving (e.g., 'Give me something sweet with a kick'): ")
+            
+            # Parse the text into a Recipe
+            simulated_recipe = parse_natural_language_order(prompt)
+            
+            # Use the display() method from your Recipe class to show the result
+            print("\nLLM parsed your request into the following instructions:")
+            simulated_recipe.display()
             input()
         elif choice == "5":
             print("Logging out...")
