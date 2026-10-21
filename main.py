@@ -20,16 +20,17 @@ def main():
         choice = input("Select an option (1-4): ")
         
         if choice == "1":
-            name = input("Type a username:")
-            if(users.users[name]):
-                user_menu_loop(users.users[name])
+            print("(To tap NFC just press enter without typing anything)")
+            name = input("Tap your NFC card or type a username:")
+            if name in users.users:
+                user_menu_loop(users.users[name.strip()])
             else:
                 print("\nError: user already exists")
                 input("Press ENTER to go back to the main menu")
             
         elif choice == "2":
             name = input("Choose a username: ")
-            if(users.create_user(name)):
+            if(users.create_user(name.strip())):
                 user_menu_loop(users.users[name])
             else:
                 print("\nError: user already exists")

@@ -1,12 +1,15 @@
 # Handles the payment flow for the user
-def process_payment():
-    print("\n--- Payment Processing ---")
-    print("1. NFC / Mobile Digital Wallet (Apple Pay/Google Pay)")
-    print("2. Credit/Debit Card (Contactless)")
-    print("3. Prepaid Employee Card")
-    
-    choice = input("Select a payment method (1-3): ")
-    
+def process_payment(active_user = None):
+    if  active_user.username != "":
+        print("\n--- Payment Processing ---")
+        print("1. NFC / Mobile Digital Wallet (Apple Pay/Google Pay)")
+        print("2. Credit/Debit Card (Contactless)")
+        print("3. Prepaid Employee Card")
+
+        choice = input("Select a payment method (1-3): ")
+    else:
+        choice = "1"
+
     if choice in ["1", "2", "3"]:
         print("\n[Payment Gateway: (Simulating successful payment...)]")
         return True

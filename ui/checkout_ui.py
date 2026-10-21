@@ -14,7 +14,7 @@ def run_checkout_flow(active_user, drink_name, customization, req_ingredients):
         return
 
     # Process the simulated payment
-    payment_successful = process_payment()
+    payment_successful = process_payment(active_user)
     
     if payment_successful:
         print("\n[SUCCESS] Dispensing your drink...")

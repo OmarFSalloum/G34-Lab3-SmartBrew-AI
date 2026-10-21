@@ -16,7 +16,8 @@ class user_db:
     def __init__(self):
         self.users = {
             "Alice" : User("Alice"),
-            "Bob" : User("Bob")
+            "Bob" : User("Bob"),
+            "" : User("")
         }
     def create_user(self, name):
         if name in self.users:
