@@ -12,6 +12,16 @@ def get_ingredients_from_recipe(recipe):
         "milk": recipe.milk_amount
     }
 
+def get_ingredients_from_customization(customization):
+    """Helper function to calculate inventory cost of a saved dictionary recipe."""
+    return {
+        "beans": customization.get("coffee_strength", 2),
+        "water": 5, 
+        "cups": 1,
+        "syrup": customization.get("syrup_shots", 0),
+        "milk": 5 if customization.get("milk_type") not in ["None", None] else 0
+    }
+
 # Loop for authenticated users with profile access
 def user_menu_loop(active_user):
     print("Welcome " + active_user.username + "!")
@@ -30,8 +40,30 @@ def user_menu_loop(active_user):
             # Pass the active user so recipes can be saved to their profile
             handle_browse_menu(active_user)
         elif choice == "2":
-            print("Save and Reorder Custom Recipes: Not implemented")
-            input("Press Enter to continue...")
+            print("\n--- Saved Custom Recipes ---")
+            
+            # Check if the user has any saved recipes
+            if not active_user.saved_recipes:
+                print("You have no saved recipes yet.")
+            else:
+                # Display the recipes
+                recipes = list(active_user.saved_recipes.items())
+                for i, (name, cust) in enumerate(recipes):
+                    print(f"{i+1}. {name} (${cust.get('price', 3.00):.2f})")
+                    
+                # Handle selection
+                rec_choice = input("\nSelect a recipe to order (or press Enter to cancel): ")
+                if rec_choice.isdigit() and 1 <= int(rec_choice) <= len(recipes):
+                    selected_name, customization = recipes[int(rec_choice)-1]
+                    
+                    print(f"\n[Ordering: {selected_name}]")
+                    # Calculate inventory requirements from the dictionary
+                    req_ingredients = get_ingredients_from_customization(customization)
+                    # Pass to checkout
+                    run_checkout_flow(active_user, selected_name, customization, req_ingredients)
+                else:
+                    print("\n[Order Cancelled]")
+            input("\nPress Enter to continue...")
         elif choice == "3":
             print("Generate Personalized/Mood Recommendations: Not implemented")
             input("Press Enter to continue...")
