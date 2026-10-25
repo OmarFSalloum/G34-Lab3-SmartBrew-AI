@@ -2,7 +2,7 @@
 def process_payment(amount, active_user=None):
 
     # Automatically process payment for logged-in users via NFC/Profile
-    if active_user is not None and getattr(active_user, 'username', "") != "":
+    if active_user is not None and getattr(active_user, 'username', "") == "":
         print(f"\n[Payment Gateway: Automatically charging NFC profile for {active_user.username} (Total: ${amount:.2f})...]")
         print("[SUCCESS] Payment approved.")
         return True
