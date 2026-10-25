@@ -1,5 +1,16 @@
 from ui.menu_ui import handle_browse_menu
+from ui.checkout_ui import run_checkout_flow
 from machine_logic.llm_simulator import parse_natural_language_order
+
+def get_ingredients_from_recipe(recipe):
+    """Helper function to calculate inventory cost of an LLM recipe."""
+    return {
+        "beans": recipe.coffee_strength,
+        "water": 5, 
+        "cups": 1,
+        "syrup": recipe.syrup_shots,
+        "milk": recipe.milk_amount
+    }
 
 # Loop for authenticated users with profile access
 def user_menu_loop(active_user):
@@ -20,10 +31,10 @@ def user_menu_loop(active_user):
             handle_browse_menu(active_user)
         elif choice == "2":
             print("Save and Reorder Custom Recipes: Not implemented")
-            input()
+            input("Press Enter to continue...")
         elif choice == "3":
             print("Generate Personalized/Mood Recommendations: Not implemented")
-            input()
+            input("Press Enter to continue...")
         elif choice == "4":
             print("\n--- LLM Order ---")
             prompt = input("Tell me what you're craving (e.g., 'Give me something sweet with a kick'): ")
@@ -34,14 +45,25 @@ def user_menu_loop(active_user):
             
             # Print the resulting parsed recipe
             simulated_recipe.display()
-            input()
+            
+            # Connect the LLM order to the checkout system
+            confirm = input("\nWould you like to order this drink? (y/n): ")
+            if confirm.lower() == 'y':
+                customization = simulated_recipe.to_dict()
+                req_ingredients = get_ingredients_from_recipe(simulated_recipe)
+                run_checkout_flow(active_user, simulated_recipe.name, customization, req_ingredients)
+            else:
+                print("\n[ORDER CANCELLED] Returning to menu.")
+                
+            input("\nPress Enter to continue...")
+            
         elif choice == "5":
             print("Logging out...")
             # Break the loop to return to the main menu
             break
         else:
             print("Invalid selection. Please try again.")
-            input()
+            input("Press Enter to continue...")
 
 # Loop for unauthenticated guest users
 def guest_menu_loop():
@@ -57,10 +79,27 @@ def guest_menu_loop():
             # Pass None so the system does not try to save the recipe
             handle_browse_menu(None)
         elif choice == "2":
-            print("Natural-Language Drink Ordering: Not implemented")
+            print("\n--- LLM Order ---")
+            prompt = input("Tell me what you're craving (e.g., 'Give me something sweet with a kick'): ")
+            
+            # Pass the text to the LLM simulator
+            simulated_recipe = parse_natural_language_order(prompt)
+            print("\nLLM parsed your request into the following instructions:")
+            simulated_recipe.display()
+            
+            confirm = input("\nWould you like to order this drink? (y/n): ")
+            if confirm.lower() == 'y':
+                customization = simulated_recipe.to_dict()
+                req_ingredients = get_ingredients_from_recipe(simulated_recipe)
+                run_checkout_flow(None, simulated_recipe.name, customization, req_ingredients)
+            else:
+                print("\n[ORDER CANCELLED] Returning to menu.")
+                
+            input("\nPress Enter to continue...")
         elif choice == "3":
             print("Exiting...")
             # Break the loop to return to the main menu
             break
         else:
             print("Invalid selection. Please try again.")
+            input("Press Enter to continue...")
