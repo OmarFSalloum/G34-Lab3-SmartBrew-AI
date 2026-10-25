@@ -3,7 +3,7 @@ from machine_logic.inventory_functions import check_order_status, process_succes
 from machine_logic.payment_service import process_payment
 
 # Handles final verification, payment, dispensing, and saving the recipe
-def run_checkout_flow(active_user, drink_name, customization, req_ingredients):
+def run_checkout_flow(active_user, drink_name, customization, req_ingredients, prompt_save=True):
     
     # Verify the machine can still make the customized drink
     can_proceed, message = check_order_status(inventory, waste_bins, req_ingredients)
@@ -28,12 +28,15 @@ def run_checkout_flow(active_user, drink_name, customization, req_ingredients):
         # Check if a logged-in user is making the order
         if active_user:
             active_user.record_order(drink_name)
-            save_choice = input("Would you like to save this customized recipe to your profile? (y/n): ")
             
-            # Save the recipe to the user profile
-            if save_choice.lower() == 'y':
-                recipe_name = input("Enter a name for this recipe: ")
-                active_user.save_recipe(recipe_name, customization)
-                print(f"Recipe '{recipe_name}' saved to your profile!")
+            # Only prompt to save if the flag is True
+            if prompt_save:
+                save_choice = input("Would you like to save this customized recipe to your profile? (y/n): ")
+                
+                # Save the recipe to the user profile
+                if save_choice.lower() == 'y':
+                    recipe_name = input("Enter a name for this recipe: ")
+                    active_user.save_recipe(recipe_name, customization)
+                    print(f"Recipe '{recipe_name}' saved to your profile!")
     else:
         print("\n[ORDER CANCELLED] Payment failed or was cancelled by user.")

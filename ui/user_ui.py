@@ -60,8 +60,8 @@ def user_menu_loop(active_user):
                     print(f"\n[Ordering: {selected_name}]")
                     # Calculate inventory requirements from the dictionary
                     req_ingredients = get_ingredients_from_customization(customization)
-                    # Pass to checkout
-                    run_checkout_flow(active_user, selected_name, customization, req_ingredients)
+                    # Pass to checkout and SKIP the save prompt since it's already saved
+                    run_checkout_flow(active_user, selected_name, customization, req_ingredients, prompt_save=False)
                 else:
                     print("\n[Order Cancelled]")
             input("\nPress Enter to continue...")
