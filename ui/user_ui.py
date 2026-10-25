@@ -1,6 +1,7 @@
 from ui.menu_ui import handle_browse_menu
 from ui.checkout_ui import run_checkout_flow
 from machine_logic.llm_simulator import parse_natural_language_order
+from machine_logic.recommendation_service import get_recommendation
 
 def get_ingredients_from_recipe(recipe):
     """Helper function to calculate inventory cost of an LLM recipe."""
@@ -33,8 +34,19 @@ def user_menu_loop(active_user):
             print("Save and Reorder Custom Recipes: Not implemented")
             input("Press Enter to continue...")
         elif choice == "3":
-            print("Generate Personalized/Mood Recommendations: Not implemented")
-            input("Press Enter to continue...")
+            # Generate recommendation
+            recommended_drink = get_recommendation(active_user)
+            
+            if recommended_drink:
+                order_choice = input("\nWould you like to order this recommendation? (y/n): ")
+                if order_choice.lower() == 'y':
+                    # Send directly to the checkout flow
+                    run_checkout_flow(
+                        active_user, 
+                        recommended_drink['name'], 
+                        recommended_drink['customization'].copy(), 
+                        recommended_drink['ingredients'].copy()
+                    )
         elif choice == "4":
             print("\n--- LLM Order ---")
             prompt = input("Tell me what you're craving (e.g., 'Give me something sweet with a kick'): ")
@@ -71,9 +83,10 @@ def guest_menu_loop():
         print("\n--- Guest user Dashboard ---")
         print("1. Browse and Customize Drinks")
         print("2. Order via Natural-Language LLM")
-        print("3. Exit")
+        print("3. View Personalized Recommendations")
+        print("4. Exit")
             
-        choice = input("Select an option (1-3): ")
+        choice = input("Select an option (1-4): ")
         
         if choice == "1":
             # Pass None so the system does not try to save the recipe
@@ -97,9 +110,21 @@ def guest_menu_loop():
                 
             input("\nPress Enter to continue...")
         elif choice == "3":
+            # Generate recommendation for guest
+            recommended_drink = get_recommendation(None)
+            
+            if recommended_drink:
+                order_choice = input("\nWould you like to order this recommendation? (y/n): ")
+                if order_choice.lower() == 'y':
+                    # Send to checkout with None as the active user
+                    run_checkout_flow(
+                        None, 
+                        recommended_drink['name'], 
+                        recommended_drink['customization'].copy(), 
+                        recommended_drink['ingredients'].copy()
+                    )
+        elif choice == "4":
             print("Exiting...")
-            # Break the loop to return to the main menu
             break
         else:
             print("Invalid selection. Please try again.")
-            input("Press Enter to continue...")
