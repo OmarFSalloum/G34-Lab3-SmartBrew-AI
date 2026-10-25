@@ -33,4 +33,4 @@ def run_checkout_flow(active_user, drink_name, customization, req_ingredients):
                 active_user.save_recipe(recipe_name, customization)
                 print(f"Recipe '{recipe_name}' saved to your profile!")
     else:
-        print("\n[ORDER CANCELLED] Payment was not successful.")
+        print("\n[ORDER CANCELLED] Payment failed or was cancelled by user.")
