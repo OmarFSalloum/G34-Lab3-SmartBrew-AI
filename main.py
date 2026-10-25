@@ -25,7 +25,7 @@ def main():
             if name in users.users:
                 user_menu_loop(users.users[name.strip()])
             else:
-                print("\nError: user already exists")
+                print("\nError: user doesn't exist")
                 input("Press ENTER to go back to the main menu")
             
         elif choice == "2":

@@ -33,7 +33,7 @@ def user_menu_loop(active_user):
         print("2. Order Saved Custom Recipe")
         print("3. View Personalized Recommendations (Weather/Time/Mood)")
         print("4. Order via Natural-Language LLM")
-        print("5. View Personal Profile & Preferences")
+        print("5. Manage Personal Profile & Preferences")
         print("6. Logout")
         
         choice = input("Select an option (1-6): ")
@@ -105,11 +105,45 @@ def user_menu_loop(active_user):
             print(f"\n--- {active_user.username}'s Profile ---")
             print(f"Total Drinks Ordered: {len(active_user.order_history)}")
             
-            print("\n[Automatically Tracked Preferences]")
+            print("\n[Current Preferences]")
             print(f" - Preferred Strength: {active_user.preferences.get('coffee_strength')}/5")
             print(f" - Preferred Milk:     {active_user.preferences.get('milk_type')}")
             print(f" - Preferred Temp:     {active_user.preferences.get('temperature')}")
             print(f" - Preferred Sweetness:{active_user.preferences.get('syrup_shots')} shots")
+            
+            edit_choice = input("\nWould you like to manually edit your preferences? (y/n): ")
+            if edit_choice.lower() == 'y':
+                print("\n[Editing Preferences - Press Enter to keep current value]")
+                
+                new_str = input(f"Coffee Strength (1-5) [{active_user.preferences.get('coffee_strength')}]: ")
+                if new_str.isdigit() and 1 <= int(new_str) <= 5:
+                    active_user.preferences['coffee_strength'] = int(new_str)
+                else:
+                    print("Invalid input")
+                    
+                print("1. None | 2. Whole | 3. Oat | 4. Almond")
+                new_milk = input(f"Milk Type (1-4) [{active_user.preferences.get('milk_type')}]: ")
+                if new_milk == '1': active_user.preferences['milk_type'] = "None"
+                elif new_milk == '2': active_user.preferences['milk_type'] = "Whole"
+                elif new_milk == '3': active_user.preferences['milk_type'] = "Oat"
+                elif new_milk == '4': active_user.preferences['milk_type'] = "Almond"
+                else:
+                    print("Invalid input")
+                
+                print("1. Hot | 2. Iced")
+                new_temp = input(f"Temperature (1-2) [{active_user.preferences.get('temperature')}]: ")
+                if new_temp == '1': active_user.preferences['temperature'] = "Hot"
+                elif new_temp == '2': active_user.preferences['temperature'] = "Iced"
+                else:
+                    print("Invalid input")
+                
+                new_syr = input(f"Syrup Shots (0-5) [{active_user.preferences.get('syrup_shots')}]: ")
+                if new_syr.isdigit() and 0 <= int(new_syr) <= 5:
+                    active_user.preferences['syrup_shots'] = int(new_syr)
+                else:
+                    print("Invalid input")
+                    
+                print("\n[SUCCESS] Preferences updated successfully!")
             
             input("\nPress Enter to continue...")
         elif choice == "6":

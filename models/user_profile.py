@@ -51,7 +51,8 @@ class user_db:
         
         self.users = {
             "Alice": alice,
-            "Bob": bob
+            "Bob": bob,
+            "": User("")
         }
         
     def create_user(self, name):
