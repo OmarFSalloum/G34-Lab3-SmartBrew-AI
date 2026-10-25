@@ -14,7 +14,7 @@ def handle_browse_menu(active_user=None):
         can_proceed, _ = check_order_status(inventory, waste_bins, drink["ingredients"])
         if can_proceed:
             available_menu[key] = drink
-            print(f"{key}. {drink['name']}")
+            print(f"{key}. {drink['name']} (${drink['customization']['price']:.2f})")
             
     # Stop the process if the machine cannot make anything
     if not available_menu:
@@ -32,7 +32,7 @@ def handle_browse_menu(active_user=None):
         req_ingredients = selected_drink["ingredients"].copy()
         
         # Display the default recipe parameters
-        print(f"\n[{selected_drink['name']}]")
+        print(f"\n[{selected_drink['name']} - ${customization['price']:.2f}]")
         print(f" - Coffee Strength: {customization['coffee_strength']}")
         print(f" - Milk Type:       {customization['milk_type']}")
         print(f" - Temperature:     {customization['temperature']}")

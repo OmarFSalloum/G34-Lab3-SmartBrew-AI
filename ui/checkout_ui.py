@@ -13,8 +13,11 @@ def run_checkout_flow(active_user, drink_name, customization, req_ingredients):
         print(f"\n[ORDER FAILED] {message}")
         return
 
-    # Process the simulated payment
-    payment_successful = process_payment(active_user)
+    # Extract the price from the customization dictionary (default to $3.00 if missing)
+    price = customization.get("price", 3.00)
+
+    # Process the simulated payment, passing the calculated price
+    payment_successful = process_payment(price, active_user)
     
     if payment_successful:
         print("\n[SUCCESS] Dispensing your drink...")

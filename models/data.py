@@ -20,16 +20,16 @@ standard_menu = {
     "1": {
         "name": "Black Coffee",
         "ingredients": {"beans": 2, "water": 10, "milk": 0, "syrup": 0, "cups": 1},
-        "customization": {"coffee_strength": 2, "milk_type": "None", "temperature": "Hot", "syrup_shots": 0}
+        "customization": {"coffee_strength": 2, "milk_type": "None", "temperature": "Hot", "syrup_shots": 0, "price": 2.00}
     },
     "2": {
         "name": "Latte",
         "ingredients": {"beans": 2, "water": 5, "milk": 5, "syrup": 0, "cups": 1},
-        "customization": {"coffee_strength": 2, "milk_type": "Whole", "temperature": "Hot", "syrup_shots": 0}
+        "customization": {"coffee_strength": 2, "milk_type": "Whole", "temperature": "Hot", "syrup_shots": 0, "price": 3.50}
     },
     "3": {
         "name": "Iced Vanilla Latte",
         "ingredients": {"beans": 2, "water": 5, "milk": 5, "syrup": 2, "cups": 1},
-        "customization": {"coffee_strength": 2, "milk_type": "Oat", "temperature": "Iced", "syrup_shots": 2}
+        "customization": {"coffee_strength": 2, "milk_type": "Oat", "temperature": "Iced", "syrup_shots": 2, "price": 4.50}
     }
 }

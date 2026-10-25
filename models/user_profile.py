@@ -10,7 +10,7 @@ class User:
         self.saved_recipes[recipe_name] = recipe_details
 
     def record_order(self, drink_name):
-        self.order_history.append(drink_name)
+        self.order_history.append(drink_name, )
 
 class user_db:
     def __init__(self):

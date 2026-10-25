@@ -1,11 +1,12 @@
 class Recipe:
-    def __init__(self, name: str, coffee_strength: int, milk_type: str, milk_amount: int, temperature: str, syrup_shots: int):
+    def __init__(self, name: str, coffee_strength: int, milk_type: str, milk_amount: int, temperature: str, syrup_shots: int, price: float):
         self.name = name
         self.coffee_strength = coffee_strength
         self.milk_type = milk_type
         self.milk_amount = milk_amount
         self.temperature = temperature
         self.syrup_shots = syrup_shots
+        self.price = price
 
     def to_dict(self):
         #Converts the recipe to a dictionary for easy storage in the session dictionaries
@@ -15,7 +16,8 @@ class Recipe:
             "milk_type": self.milk_type,
             "milk_amount": self.milk_amount,
             "temperature": self.temperature,
-            "syrup_shots": self.syrup_shots
+            "syrup_shots": self.syrup_shots,
+            "price": self.price
         }
 
     def display(self):
