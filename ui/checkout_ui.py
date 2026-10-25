@@ -29,6 +29,10 @@ def run_checkout_flow(active_user, drink_name, customization, req_ingredients, p
         if active_user:
             active_user.record_order(drink_name)
             
+            # --- AUTOMATIC PREFERENCE TRACKING ---
+            # Update the user's preference profile based on what they just ordered
+            active_user.update_preferences(customization)
+            
             # Only prompt to save if the flag is True
             if prompt_save:
                 save_choice = input("Would you like to save this customized recipe to your profile? (y/n): ")

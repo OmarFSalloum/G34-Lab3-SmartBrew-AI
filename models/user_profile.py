@@ -2,7 +2,15 @@ class User:
     def __init__(self, username, nfc_id=None):
         self.username = username
         self.nfc_id = nfc_id  # Stores the simulated NFC chip ID
-        self.preferences = {}
+        
+        # Default baseline preferences
+        self.preferences = {
+            "coffee_strength": 3,
+            "milk_type": "None",
+            "temperature": "Hot",
+            "syrup_shots": 0
+        }
+        
         self.saved_recipes = {}
         self.order_history = []
 
@@ -11,6 +19,13 @@ class User:
 
     def record_order(self, drink_name):
         self.order_history.append(drink_name)
+        
+    def update_preferences(self, customization):
+        """Automatically updates user preferences based on their latest order parameters."""
+        self.preferences["coffee_strength"] = customization.get("coffee_strength", self.preferences["coffee_strength"])
+        self.preferences["milk_type"] = customization.get("milk_type", self.preferences["milk_type"])
+        self.preferences["temperature"] = customization.get("temperature", self.preferences["temperature"])
+        self.preferences["syrup_shots"] = customization.get("syrup_shots", self.preferences["syrup_shots"])
 
 class user_db:
     def __init__(self):
@@ -36,8 +51,7 @@ class user_db:
         
         self.users = {
             "Alice": alice,
-            "Bob": bob,
-            "" : User("")
+            "Bob": bob
         }
         
     def create_user(self, name):

@@ -33,9 +33,10 @@ def user_menu_loop(active_user):
         print("2. Order Saved Custom Recipe")
         print("3. View Personalized Recommendations (Weather/Time/Mood)")
         print("4. Order via Natural-Language LLM")
-        print("5. Logout")
+        print("5. View Personal Profile & Preferences")
+        print("6. Logout")
         
-        choice = input("Select an option (1-5): ")
+        choice = input("Select an option (1-6): ")
         
         if choice == "1":
             # Pass the active user so recipes can be saved to their profile
@@ -100,8 +101,18 @@ def user_menu_loop(active_user):
                 print("\n[ORDER CANCELLED] Returning to menu.")
                 
             input("\nPress Enter to continue...")
-            
         elif choice == "5":
+            print(f"\n--- {active_user.username}'s Profile ---")
+            print(f"Total Drinks Ordered: {len(active_user.order_history)}")
+            
+            print("\n[Automatically Tracked Preferences]")
+            print(f" - Preferred Strength: {active_user.preferences.get('coffee_strength')}/5")
+            print(f" - Preferred Milk:     {active_user.preferences.get('milk_type')}")
+            print(f" - Preferred Temp:     {active_user.preferences.get('temperature')}")
+            print(f" - Preferred Sweetness:{active_user.preferences.get('syrup_shots')} shots")
+            
+            input("\nPress Enter to continue...")
+        elif choice == "6":
             print("Logging out...")
             # Break the loop to return to the main menu
             break
@@ -111,6 +122,7 @@ def user_menu_loop(active_user):
 
 # Loop for unauthenticated guest users
 def guest_menu_loop():
+    # ... guest loop remains unchanged for brevity ...
     while True:
         print("\n--- Guest user Dashboard ---")
         print("1. Browse and Customize Drinks")
@@ -121,13 +133,10 @@ def guest_menu_loop():
         choice = input("Select an option (1-4): ")
         
         if choice == "1":
-            # Pass None so the system does not try to save the recipe
             handle_browse_menu(None)
         elif choice == "2":
             print("\n--- LLM Order ---")
             prompt = input("Tell me what you're craving (e.g., 'Give me something sweet with a kick'): ")
-            
-            # Pass the text to the LLM simulator
             simulated_recipe = parse_natural_language_order(prompt)
             print("\nLLM parsed your request into the following instructions:")
             simulated_recipe.display()
@@ -142,13 +151,10 @@ def guest_menu_loop():
                 
             input("\nPress Enter to continue...")
         elif choice == "3":
-            # Generate recommendation for guest
             recommended_drink = get_recommendation(None)
-            
             if recommended_drink:
                 order_choice = input("\nWould you like to order this recommendation? (y/n): ")
                 if order_choice.lower() == 'y':
-                    # Send to checkout with None as the active user
                     run_checkout_flow(
                         None, 
                         recommended_drink['name'], 
