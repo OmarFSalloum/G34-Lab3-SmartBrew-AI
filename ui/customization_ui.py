@@ -1,18 +1,5 @@
 from models.data import inventory
-
-def calculate_dynamic_price(req_ingredients, customization):
-    """Calculates the price of the drink based on its ingredients."""
-    base_price = 1.00 # Flat cup/water base fee
-    base_price += req_ingredients.get('beans', 0) * 0.50
-    base_price += req_ingredients.get('syrup', 0) * 0.50
-    
-    milk_type = customization.get('milk_type', 'None')
-    if milk_type in ['Oat', 'Almond']:
-        base_price += 1.00 # Premium milk surcharge
-    elif milk_type == 'Whole':
-        base_price += 0.50
-        
-    return base_price
+from models.recipe import Recipe
 
 # Handles the interactive prompts for modifying a drink's parameters
 def run_customization_flow(customization, req_ingredients):
@@ -83,8 +70,16 @@ def run_customization_flow(customization, req_ingredients):
         else:
             print(f"Invalid amount. Keeping at {customization['syrup_shots']}.")
 
-    # Dynamically calculate the new price
-    new_price = calculate_dynamic_price(req_ingredients, customization)
+    # Dynamically calculate the new price by generating a temporary Recipe
+    temp_recipe = Recipe(
+        name="Temp",
+        coffee_strength=customization['coffee_strength'],
+        milk_type=customization['milk_type'],
+        milk_amount=req_ingredients.get('milk', 0),
+        temperature=customization['temperature'],
+        syrup_shots=customization['syrup_shots']
+    )
+    new_price = temp_recipe.price
     customization['price'] = new_price
     print(f"\n[Updated Price: ${new_price:.2f}]")
 

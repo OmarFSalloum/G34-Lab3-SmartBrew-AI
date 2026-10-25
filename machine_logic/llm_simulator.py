@@ -40,24 +40,12 @@ def parse_natural_language_order(user_text: str):
     elif any(word in text for word in ["creamy", "extra milk", "latte"]):
         milk_amount = 5
 
-    # 5. Calculate Price based on derived parameters
-    # Matches the dynamic pricing logic: Base ($1) + Beans ($0.50/each) + Syrup ($0.50/each) + Milk upcharge
-    price = 1.00 
-    price += coffee_strength * 0.50
-    price += syrup_shots * 0.50
-    
-    if milk_type in ["Oat Milk", "Oat", "Almond"]:
-        price += 1.00  # Premium milk surcharge
-    elif milk_type != "None" and milk_amount > 0:
-        price += 0.50  # Standard milk charge
-
-    # Return the simulated parsed Recipe including the calculated price
+    # 5. Construct and return the Recipe (price is automatically calculated in the constructor)
     return Recipe(
         name=name.strip(),
         coffee_strength=coffee_strength,
         milk_type=milk_type,
         milk_amount=milk_amount,
         temperature=temperature,
-        syrup_shots=syrup_shots,
-        price=price
+        syrup_shots=syrup_shots
     )
