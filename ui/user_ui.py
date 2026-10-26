@@ -2,6 +2,7 @@ from ui.menu_ui import handle_browse_menu
 from ui.checkout_ui import run_checkout_flow
 from machine_logic.llm_simulator import parse_natural_language_order
 from machine_logic.recommendation_service import get_recommendation
+from models.recipe import Recipe
 
 def get_ingredients_from_recipe(recipe):
     """Helper function to calculate inventory cost of an LLM recipe."""
@@ -61,8 +62,29 @@ def user_menu_loop(active_user):
                     print(f"\n[Ordering: {selected_name}]")
                     # Calculate inventory requirements from the dictionary
                     req_ingredients = get_ingredients_from_customization(customization)
-                    # Pass to checkout and SKIP the save prompt since it's already saved
-                    run_checkout_flow(active_user, selected_name, customization, req_ingredients, prompt_save=False)
+
+                    # Create a temporary Recipe object to format and display the properties 
+                    milk_amt = 5 if customization.get("milk_type") not in ["None", None] else 0
+                    temp_recipe = Recipe(
+                        name=selected_name,
+                        coffee_strength=customization.get("coffee_strength", 2),
+                        milk_type=customization.get("milk_type", "None"),
+                        milk_amount=milk_amt,
+                        temperature=customization.get("temperature", "Hot"),
+                        syrup_shots=customization.get("syrup_shots", 0)
+                    )
+                    
+                    # Display the ingredients to the user
+                    temp_recipe.display()
+
+                    # Ask for confirmation before ordering
+                    confirm = input("\nWould you like to order this saved recipe? (y/n): ")
+                    if confirm.lower() == 'y':
+                        print(f"\n[Ordering: {selected_name}]")
+                        # Pass to checkout and SKIP the save prompt since it is already saved
+                        run_checkout_flow(active_user, selected_name, customization, req_ingredients, prompt_save=False)
+                    else:
+                        print("\n[Order Cancelled] Returning to menu.")
                 else:
                     print("\n[Order Cancelled]")
             input("\nPress Enter to continue...")
